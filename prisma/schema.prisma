@@ -48,7 +48,7 @@ model Book {
  title       String
  author      String
  publishYear Int?
- price       Float
+ price       Int
  available   Boolean  @default(true)
  description String?
  createdAt   DateTime @default(now())

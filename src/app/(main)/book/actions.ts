@@ -59,3 +59,10 @@ export async function deleteBook(bookId: string) {
   revalidatePath("/book");
   redirect("/book");
 }
+
+function BookViewPage({
+  }): void {
+  // Your component implementation
+}
+
+export default BookViewPage;

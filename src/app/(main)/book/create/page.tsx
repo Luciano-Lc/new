@@ -1,4 +1,3 @@
-// Then update the component state and handling:
 'use client';
 
 import { useState } from 'react';
@@ -15,8 +14,8 @@ export default function CreateBookPage() {
     id: '',
     title: '',
     author: '',
-    description: '',  // keep as string for form input
-    publishYear: '',  // keep as string for form input
+    description: '',
+    publishYear: '',
     price: '',
   });
 
@@ -24,7 +23,7 @@ export default function CreateBookPage() {
     const { name, value } = e.target;
     setBookData(prev => ({
       ...prev,
-      [name]: value
+      [name]: name === 'price' ? parseFloat(value) || '' : value,
     }));
   };
 
@@ -33,11 +32,11 @@ export default function CreateBookPage() {
     setIsSubmitting(true);
     setError(null);
 
-    // Convert to BookValues type with number
+    // Convert bookData to BookValues with correct types
     const bookValues: BookValues = {
       ...bookData,
-      publishYear: parseInt(bookData.publishYear, 10),
-      price: 0
+      publishYear: parseInt(bookData.publishYear, 10) || new Date().getFullYear(),
+      price: parseFloat(bookData.price) || 0,
     };
 
     try {
@@ -65,10 +64,8 @@ export default function CreateBookPage() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex flex-col border-2 border-orange-500 rounded-xl p-6">
           <div className="space-y-4">
-          <div>
-              <label htmlFor="Id" className="block text-xl text-gray-500 mb-2">
-                No.
-              </label>
+            <div>
+              <label htmlFor="Id" className="block text-xl text-gray-500 mb-2">No.</label>
               <input
                 id="id"
                 name="id"
@@ -81,9 +78,7 @@ export default function CreateBookPage() {
             </div>
 
             <div>
-              <label htmlFor="title" className="block text-xl text-gray-500 mb-2">
-                Title
-              </label>
+              <label htmlFor="title" className="block text-xl text-gray-500 mb-2">Title</label>
               <input
                 id="title"
                 name="title"
@@ -91,14 +86,12 @@ export default function CreateBookPage() {
                 required
                 value={bookData.title}
                 onChange={handleChange}
-               className="border-2 border-gray-500 px-4 py-2 w-full rounded focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                className="border-2 border-gray-500 px-4 py-2 w-full rounded focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
             </div>
 
             <div>
-              <label htmlFor="author" className="block text-xl text-gray-500 mb-2">
-                Author
-              </label>
+              <label htmlFor="author" className="block text-xl text-gray-500 mb-2">Author</label>
               <input
                 id="author"
                 name="author"
@@ -110,11 +103,8 @@ export default function CreateBookPage() {
               />
             </div>
 
-
             <div>
-              <label htmlFor="descriptionr" className="block text-xl text-gray-500 mb-2">
-                Description          
-              </label>
+              <label htmlFor="description" className="block text-xl text-gray-500 mb-2">Description</label>
               <input
                 id="description"
                 name="description"
@@ -125,15 +115,13 @@ export default function CreateBookPage() {
                 className="border-2 border-gray-500 px-4 py-2 w-full rounded focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
             </div>
-            
+
             <div>
-              <label htmlFor="price" className="block text-xl text-gray-500 mb-2">
-                Publish Year
-              </label>
+              <label htmlFor="publishYear" className="block text-xl text-gray-500 mb-2">Publish Year</label>
               <input
                 id="publishYear"
                 name="publishYear"
-                type="publishYear"
+                type="number"
                 required
                 value={bookData.publishYear}
                 onChange={handleChange}
@@ -142,13 +130,12 @@ export default function CreateBookPage() {
             </div>
 
             <div>
-              <label htmlFor="price" className="block text-xl text-gray-500 mb-2">
-                Price
-              </label>
+              <label htmlFor="price" className="block text-xl text-gray-500 mb-2">Price</label>
               <input
                 id="price"
                 name="price"
                 type="number"
+                step="0.01"
                 required
                 value={bookData.price}
                 onChange={handleChange}
@@ -166,8 +153,9 @@ export default function CreateBookPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`mt-6 p-3 bg-orange-500 text-white rounded-md hover:bg-orange-500 transition-colors
-              ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`mt-6 p-3 bg-orange-500 text-white rounded-md hover:bg-orange-500 transition-colors ${
+              isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
             {isSubmitting ? 'Creating...' : 'Create Book'}
           </button>

@@ -58,4 +58,5 @@ export default async function BooksPage({
       {/* Add pagination UI here */}
     </div>
   );
+
 }
