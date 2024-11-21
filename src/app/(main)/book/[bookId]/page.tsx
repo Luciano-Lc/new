@@ -10,23 +10,22 @@ import { deleteBook, fetchBook } from "./view/actions";
 export default function BookPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-    const { bookId } = router.query;
-    const [book, setBook] = useState<Book | null>(null);
+  const bookId = searchParams.get("id"); // Assumes the book ID is passed as a query parameter
+  const [book, setBook] = useState<Book | null>(null);
   const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    
+  const [loading, setLoading] = useState<boolean>(true);
 
-
-    
-
-
-
-
-useEffect(() => {
-  if (!bookId) {
-    console.error("Book ID is missing");
-  }
-}, [bookId]);
+  useEffect(() => {
+    if (bookId) {
+      fetchBook(bookId)
+        .then((data) => setBook(data))
+        .catch((err) => setError(err.message))
+        .finally(() => setLoading(false));
+    } else {
+      setError("Book ID is missing");
+      setLoading(false);
+    }
+  }, [bookId]);
 
   const handleEdit = () => {
     if (!bookId) return;
@@ -57,8 +56,12 @@ useEffect(() => {
         Back to List
       </Button>
       {book || error ? (
-    <ViewBook book={book} onEdit={() => handleEdit(book.id)} onDelete={() => handleDelete(book.id)} />
-
+        <ViewBook 
+          book={book} 
+          error={error}
+          onEdit={handleEdit} 
+          onDelete={handleDelete} 
+        />
       ) : (
         <div>No data available</div>
       )}
