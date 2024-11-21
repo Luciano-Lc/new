@@ -44,17 +44,18 @@ model Session {
 }
 
 model Book {
- id          String   @id @default(uuid())
+  id        String    @id @default(cuid())
  title       String
  author      String
  publishYear Int?
  price       Int
  available   Boolean  @default(true)
  description String?
- createdAt   DateTime @default(now())
- updatedAt   DateTime @updatedAt
+  createdAt DateTime?  // Also make createdAt optional if needed
+  updatedAt DateTime?  // Make it optional with the ? 
  userId      String
  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
  @@map("books")
 }
+

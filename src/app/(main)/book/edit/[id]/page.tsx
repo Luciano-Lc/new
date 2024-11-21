@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
-import UpdateBook from "@/app/(main)/update/UpdateBook";
+import UpdateBook from "../update/UpdateBook";
 
 export default async function UpdateBookPage({ 
   params 
@@ -19,7 +19,7 @@ export default async function UpdateBookPage({
      return (
        <div className="container mx-auto py-8">
          <h1 className="text-2xl font-bold mb-6">Update Book</h1>
-         <UpdateBook book={book} />
+<UpdateBook id={book.id} book={book} />
        </div>
      );
    } catch (error) {

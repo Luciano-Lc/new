@@ -1,12 +1,19 @@
-"use client";
-import { useState } from "react";
-import { Book } from "@prisma/client";
-import { updateBook } from "./actions";
+'use client';
 
 interface UpdateBookProps {
-  book: Book;
+  id: string;
+  book: {
+    title: string;
+    author: string;
+    description?: string;
+  };
 }
 
-export default function UpdateBook({ book }: UpdateBookProps) {
-  // Rest of your existing component code
+export default function UpdateBook({ id, book }: UpdateBookProps) {
+  return (
+    <div>
+      <h1>Update Book: {book.title}</h1>
+      <p>Author: {book.author}</p>
+    </div>
+  );
 }

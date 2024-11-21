@@ -1,40 +1,25 @@
-"use client";
-import { useState } from "react";
-import { deleteBook } from "./actions";
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+'use client'; // This makes the component a Client Component
 
-interface DeleteBookProps {
-  bookId: string;
-  onDeleteSuccess?: () => void;
+import React from "react";
+
+interface DeleteButtonProps {
+  onDelete: () => void;
 }
 
-export default function DeleteBook({ bookId }: DeleteBookProps) {
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this book?")) {
-      setIsDeleting(true);
-      try {
-        await deleteBook(bookId);
-      } catch (error) {
-        console.error(error);
-        setIsDeleting(false);
-      }
+export default function DeleteButton({ onDelete }: DeleteButtonProps) {
+  const handleDelete = () => {
+    const confirmed = confirm("Are you sure you want to delete this book?");
+    if (confirmed) {
+      onDelete();
     }
   };
 
   return (
-    <Button 
-      variant="destructive" 
-      onClick={handleDelete} 
-      disabled={isDeleting}
-      className="bg-red-600 hover:bg-red-700"
+    <button
+      onClick={handleDelete}
+      className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg text-lg"
     >
-      <Trash2 className="mr-2 h-4 w-4" />
-      {isDeleting ? "Deleting..." : "Delete Book"}
-    </Button>
+      Delete Book
+    </button>
   );
-
-  
 }
